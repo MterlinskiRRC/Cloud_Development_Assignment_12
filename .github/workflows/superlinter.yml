@@ -1,0 +1,27 @@
+---
+name: Lint Code Base
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: '**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  run-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Essential for detecting changed files
+      - name: Lint Code Base
+        uses: github/super-linter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: false # Only lint changed files
+          DEFAULT_BRANCH: main
